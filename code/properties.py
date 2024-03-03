@@ -35,15 +35,15 @@ class Properties :
                 display_text += "   "
             else:
                 display_text += "_  "
-        self.draw_text(display_text, (0, 255, 0), 20, 60)
+        self.draw_text(display_text, (0, 150, 0), 20, 60)
 
-    def draw_win(self) :
-        text_surface = self.font.render("Félicitations, vous avez gagné !", True, (0, 0, 255))
+    def draw_win(self, phrase) :
+        text_surface = self.font.render(f"Félicitations, vous avez gagné, le mot était ({phrase}) !", True, (0, 0, 255))
         text_rect = text_surface.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2))
         self.screen.blit(text_surface, text_rect)
 
-    def draw_loose(self) :
-        text_surface = self.font.render("Désolé, vous avez perdu.", True, (255, 0, 0))
+    def draw_loose(self, phrase) :
+        text_surface = self.font.render(f"Désolé, vous avez perdu, le mot était ({phrase}).", True, (255, 0, 0))
         text_rect = text_surface.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2))
         self.screen.blit(text_surface, text_rect)
 

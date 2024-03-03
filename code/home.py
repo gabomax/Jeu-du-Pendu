@@ -1,7 +1,9 @@
 import pygame
 from properties import Properties
+from sound import Sound
 
 properties = Properties()
+sound = Sound()
 
 class Home :
 
@@ -15,6 +17,8 @@ class Home :
 
     # Fonction pour afficher le menu d'accueil
     def run(self):
+
+        sound.menu_play()   
 
         while not self.start:
             

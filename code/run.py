@@ -5,12 +5,14 @@ from game import Game
 from choose import PhraseChooser
 from properties import Properties
 from home import Home
+from sound import Sound
 
 state = State()
 game = Game()
 phrase_chooser = PhraseChooser()
 properties = Properties()
 home = Home()
+sound = Sound()
 
 class Run :
 
@@ -65,26 +67,33 @@ class Run :
                             # Si la touche appuyée correspond à une lettre de l'alphabet
                             self.letter = chr(event.key)
                             if self.letter.lower() in game.letters:
+                                sound.correct_play()
                                 print("La lettre", self.letter, "existe dans la phrase choisie.")
                                 guessed_letters.append(self.letter)
-                            else:
-                                if self.letter not in properties.wrong_letters :
-                                    state.change_state()
-                                    properties.wrong_letters.append(self.letter)
+                            elif self.letter not in properties.wrong_letters :
+                                sound.fail_play()
+                                state.change_state()
+                                properties.wrong_letters.append(self.letter)
                                 print("La lettre", self.letter, "n'existe pas dans la phrase choisie.")
 
-                properties.draw_wrong_letters()
+
                 properties.draw_phrase(self.phrase, guessed_letters)
+                properties.draw_wrong_letters()
 
                 # victoire
                 if all(char.lower() in guessed_letters for char in self.phrase.lower() if char != ' '):
-
+                    
                     # Effacer l'écran
                     properties.screen.fill((255, 255, 255))
 
-                    properties.draw_win()
+                    properties.draw_win(self.phrase)
 
                     pygame.display.flip()
+                    
+                    pygame.time.delay(1500)
+                    
+                    sound.stop_menu()
+                    sound.win_play()
 
                     # attendre 5 secondes
                     pygame.time.delay(5000)
@@ -93,13 +102,18 @@ class Run :
 
                 # défaite
                 if state.state == state.st9 :
-
+                    
                     # Effacer l'écran
                     properties.screen.fill((255, 255, 255))
 
-                    properties.draw_loose()
+                    properties.draw_loose(self.phrase)
 
                     pygame.display.flip()
+                    
+                    pygame.time.delay(1500)
+                    
+                    sound.stop_menu()
+                    sound.loose_play()
 
                     # attendre 5 secondes
                     pygame.time.delay(5000)
