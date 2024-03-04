@@ -9,8 +9,13 @@ class Home :
 
     def __init__(self) :
         self.start = False
-        self.stat_button_img = pygame.image.load("assets/play.png")
+        self.start_button_img = pygame.image.load("assets/play.png")
+        self.hover_start_button_img = pygame.image.load("assets/play_toggle.png")
         self.quit_button_img = pygame.image.load("assets/quit.png")
+        self.hover_quit_button_img = pygame.image.load("assets/quit_toggle.png")
+        
+        self.start_button = self.start_button_img
+        self.quit_button = self.quit_button_img
 
     def reset(self) :
         self.start = False
@@ -32,10 +37,10 @@ class Home :
             click = pygame.mouse.get_pressed()
 
             # Bouton pour démarrer le jeu
-            start_button_rect = self.stat_button_img.get_rect(center=(properties.WIDTH // 2, properties.HEIGHT // 2 - 60))
+            start_button_rect = self.start_button.get_rect(center=(properties.WIDTH // 2, properties.HEIGHT // 2 - 60))
 
             # Bouton pour quitter
-            quit_button_rect = self.quit_button_img.get_rect(center=(properties.WIDTH // 2, properties.HEIGHT // 2 + + 60))
+            quit_button_rect = self.quit_button.get_rect(center=(properties.WIDTH // 2, properties.HEIGHT // 2 + + 60))
 
             # Gestion des événements
             for event in pygame.event.get():
@@ -47,9 +52,22 @@ class Home :
                         self.start = True
                     if quit_button_rect.collidepoint(mouse):
                         pygame.quit()
+                        
+                if event.type == pygame.MOUSEMOTION:
+                    # Vérifier si la souris survole les boutons
+                    if start_button_rect.collidepoint(event.pos):
+                        self.start_button = self.hover_start_button_img
+                    else:
+                        self.start_button = self.start_button_img
+
+                    if quit_button_rect.collidepoint(event.pos):
+                        self.quit_button = self.hover_quit_button_img
+                    else:
+                        self.quit_button = self.quit_button_img
+
 
             properties.screen.blit(text_surface, text_rect)
-            properties.screen.blit(self.stat_button_img, start_button_rect)
-            properties.screen.blit(self.quit_button_img, quit_button_rect)
+            properties.screen.blit(self.start_button, start_button_rect)
+            properties.screen.blit(self.quit_button, quit_button_rect)
 
             pygame.display.update()
